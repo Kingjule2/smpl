@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,9 +25,11 @@ Route::middleware('guest')->group(function () {
 
 // Authenticated routes (hanya bisa diakses jika sudah login)
 Route::middleware('auth')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::post('/dashboard', [DashboardController::class, 'store'])->name('dashboard.store');
+    Route::post('/dashboard/kolam', [DashboardController::class, 'storeKolam'])->name('dashboard.storeKolam');
+    Route::post('/dashboard/kolam/{kolam}/move', [DashboardController::class, 'confirmMove'])->name('dashboard.confirmMove');
+    Route::post('/dashboard/kolam/{kolam}/harvest', [DashboardController::class, 'confirmHarvest'])->name('dashboard.confirmHarvest');
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
